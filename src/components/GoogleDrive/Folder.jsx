@@ -9,7 +9,7 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import { useFolder } from "../../hooks/useFolder";
 import { database } from "../../firebase";
 import { ROOT_FOLDER } from "../../hooks/useFolder";
-import { Button, Modal, Paper, TextField } from "@material-ui/core";
+import { Button, Menu, MenuItem, Modal, Paper, TextField } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 
 const CenteredModal = styled(Modal)`
@@ -19,12 +19,11 @@ const CenteredModal = styled(Modal)`
 
 const StyledFolder = styled.div`
   border: 2px solid #19348b;
-  padding: 7px 15px;
-  border-radius: 7px;
+  padding: 10px;
+  border-radius: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-direction: row;
   width: fit-content;
   gap: 12px;
   margin: 15px;
@@ -40,18 +39,38 @@ const StyledLink = styled(Link)`
   align-items: center;
 `;
 
+const ActionsMenu = styled(Menu)`
+  .MuiList-root {
+    padding: 8px 0;
+  }
+  .MuiPaper-root {
+    background-color: #D9E2FE;
+  }
+`;
+
+const ActionMenuItem = styled(MenuItem)`
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin-right: 8px;
+  }
+`;
+
 const Folder = ({ folder }) => {
   const { currentUser } = useAuth();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [newName, setNewName] = useState("");
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [moveModalOpen, setMoveModalOpen] = useState(false);
-  const [folderName, setFolderName] = useState("");
-  const [newName, setNewName] = useState("");
   const { allFolders } = useFolder();
 
-  const handleDropdownToggle = (e) => {
-    e.stopPropagation();
-    setIsDropdownOpen(!isDropdownOpen);
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   const handleDeleteClick = () => {
@@ -68,6 +87,8 @@ const Folder = ({ folder }) => {
       .catch((err) => {
         console.log(err);
       });
+
+    handleMenuClose();
   };
 
   const handleRenameClick = () => {
@@ -77,18 +98,20 @@ const Folder = ({ folder }) => {
 
     setNewName(folder.name);
     setRenameModalOpen(true);
+    handleMenuClose();
   };
 
   const handleMoveClick = () => {
     if (folder === ROOT_FOLDER) {
       return;
     }
+
     setMoveModalOpen(true);
+    handleMenuClose();
   };
 
   const handleRenameConfirm = () => {
     if (newName.trim() === "") {
-      // Handle empty name
       return;
     }
 
@@ -97,6 +120,7 @@ const Folder = ({ folder }) => {
     });
 
     setRenameModalOpen(false);
+    handleMenuClose();
   };
 
   const handleClose = () => {
@@ -121,7 +145,8 @@ const Folder = ({ folder }) => {
     });
 
     setMoveModalOpen(false);
-  }
+    handleMenuClose();
+  };
 
   return (
     <>
@@ -140,19 +165,26 @@ const Folder = ({ folder }) => {
 
         {currentUser && currentUser.uid === folder.userId && (
           <div>
-            <MoreHorizIcon onClick={handleDropdownToggle} />
-            {isDropdownOpen && (
-              <div>
-                <DeleteIcon onClick={handleDeleteClick} />
-                <EditIcon onClick={handleRenameClick} />
-                <ArrowForwardIcon onClick={handleMoveClick} />
-              </div>
-            )}
+            <MoreHorizIcon onClick={handleMenuClick} />
+            <ActionsMenu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <ActionMenuItem onClick={handleDeleteClick}>
+                <DeleteIcon /> Delete
+              </ActionMenuItem>
+              <ActionMenuItem onClick={handleRenameClick}>
+                <EditIcon /> Rename
+              </ActionMenuItem>
+              <ActionMenuItem onClick={handleMoveClick}>
+                <ArrowForwardIcon /> Move
+              </ActionMenuItem>
+            </ActionsMenu>
           </div>
         )}
       </StyledFolder>
 
-      {/* Centered Modal for Rename */}
       <CenteredModal
         open={renameModalOpen}
         onClose={handleClose}
@@ -162,32 +194,22 @@ const Folder = ({ folder }) => {
         <Paper
           style={{
             padding: "15px",
-            borderRadius: "7px",
+            borderRadius: "10px",
             width: "400px",
-            paddingBottom: "20px",
           }}
         >
           <h1>Rename Folder</h1>
+          <TextField
+            fullWidth
+            variant="outlined"
+            label="Enter new name for folder"
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            style={{ marginBottom: "20px" }}
+          />
           <div
             style={{
-              display: "grid",
-              placeItems: "center",
-              margin: "15px",
-              marginBottom: "30px",
-            }}
-          >
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Enter new name for folder"
-              value={newName}
-              onChange={(e) => setNewName(e.target.value)}
-            />
-          </div>
-          <footer
-            style={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "space-evenly",
             }}
           >
@@ -201,11 +223,10 @@ const Folder = ({ folder }) => {
             <Button onClick={handleClose} color="primary" variant="contained">
               Cancel
             </Button>
-          </footer>
+          </div>
         </Paper>
       </CenteredModal>
 
-      {/* Centered Modal for Move */}
       <CenteredModal
         open={moveModalOpen}
         onClose={handleClose}
