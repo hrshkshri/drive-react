@@ -114,7 +114,7 @@ const SignIn = () => {
               helperText={
                 formik.touched.password && formik.errors.password
                   ? formik.errors.password
-                  : ""
+                  : "Password must be at least 6 characters"
               }
             />
 

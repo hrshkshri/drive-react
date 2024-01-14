@@ -131,7 +131,7 @@ const SignUp = () => {
               helperText={
                 formik.touched.password2 && formik.errors.password2
                   ? formik.errors.password2
-                  : ""
+                  : "Password must be at least 6 characters"
               }
             />
 
@@ -161,7 +161,7 @@ const SignUp = () => {
               {message && <p>{message}</p>}
               {success && (
                 <span>
-                  <Link to="/signin">Go to Login</Link>
+                  <Link to="/">Go to Login</Link>
                 </span>
               )}
             </div>
