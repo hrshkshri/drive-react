@@ -7,6 +7,7 @@ const ACTIONS = {
   UPDATE_FOLDER: "UPDATE_FOLDER",
   SET_CHILD_FOLDERS: "SET_CHILD_FOLDERS",
   SET_CHILD_FILES: "SET_CHILD_FILES",
+  SET_ALL_FOLDERS: "SET_ALL_FOLDERS",
 };
 
 export const ROOT_FOLDER = {
@@ -23,6 +24,7 @@ const reducer = (state, { type, payload }) => {
         folder: payload.folder,
         childFolders: [],
         childFiles: [],
+        allFolders: state.allFolders,
       };
     }
 
@@ -32,6 +34,7 @@ const reducer = (state, { type, payload }) => {
         folder: payload.folder,
       };
     }
+
     case ACTIONS.SET_CHILD_FOLDERS: {
       return {
         ...state,
@@ -45,6 +48,14 @@ const reducer = (state, { type, payload }) => {
         childFiles: payload.childFiles,
       };
     }
+
+    case ACTIONS.SET_ALL_FOLDERS: {
+      return {
+        ...state,
+        allFolders: payload.allFolders,
+      };
+    }
+
     default: {
       return state;
     }
@@ -57,6 +68,7 @@ export function useFolder(folderId = null, folder = null) {
     folder,
     childFolders: [],
     childFiles: [],
+    allFolders: [],
   });
   const { currentUser } = useAuth();
 
@@ -90,7 +102,6 @@ export function useFolder(folderId = null, folder = null) {
             folder: database.formattedDoc(doc),
           },
         });
-        // console.log(database.formattedDoc(doc));
       })
       .catch(() => {
         dispatch({
@@ -101,6 +112,23 @@ export function useFolder(folderId = null, folder = null) {
         });
       });
   }, [folderId]);
+
+  useEffect(() => {
+    const unsubscribeFolders = database.folders
+      .where("userId", "==", currentUser?.uid)
+      .orderBy("createdAt")
+      .onSnapshot((snapshot) => {
+        dispatch({
+          type: ACTIONS.SET_ALL_FOLDERS,
+          payload: {
+            allFolders: snapshot.docs.map(database.formattedDoc),
+          },
+        });
+      });
+
+    return () => unsubscribeFolders();
+
+  }, [currentUser]);
 
   useEffect(() => {
     return database.folders
