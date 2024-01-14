@@ -1,4 +1,4 @@
-# Google Drive clone
+# React Drive
 
 This is a practice project built for understanding the important concepts of firebase.
 
