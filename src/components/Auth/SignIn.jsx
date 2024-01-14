@@ -53,35 +53,6 @@ const SignIn = () => {
       });
   };
 
-  // const validate = (values) => {
-  //   //values.name, etc
-  //   //error.name, etc
-
-  //   let errors = {};
-
-  //   if (!values.email) {
-  //     errors.email = "This field is required";
-  //   } else if (
-  //     !/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i.test(
-  //       values.email
-  //     )
-  //   ) {
-  //     errors.email = "Invalid Email Format";
-  //   }
-
-  //   if (!values.password) {
-  //     errors.password = "This field is required";
-  //   } else if (
-  //     !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/i.test(values.password)
-  //   ) {
-  //     errors.password = "Invalid Password Format";
-  //   }
-
-  //   return errors;
-  // };
-
-  //init formik
-
   const validate = () => {
   // Return an empty object to indicate no validation errors
   return {};
