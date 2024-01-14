@@ -27,7 +27,6 @@ const FolderBreadCrumbs = ({ currentFolder }) => {
       {path.map((folder, index) => (
         <StyledLink
           key={folder.id}
-          // to={folder.id ? `/folder/${folder.id}` : "/"}
 
           to={{
             pathname: folder.id ? `/folder/${folder.id}` : "/",

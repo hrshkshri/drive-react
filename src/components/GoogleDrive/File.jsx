@@ -26,10 +26,6 @@ const StyledFile = styled.div`
   gap: 12px;
   margin: 15px;
   cursor: pointer;
-  .more-options-menu {
-    // Add the background color for the More options menu
-    background-color: #19348b;
-  }
 `;
 
 const StyledLink = styled.a`
