@@ -44,11 +44,7 @@ const AddFolderButton = ({ currentFolder }) => {
     if (currentFolder !== ROOT_FOLDER) {
       path.push({ name: currentFolder.name, id: currentFolder.id });
     }
-
-    console.log("Folder created");
-
-    //create folder in database
-
+  
     database.folders.add({
       name: folderName,
       userId: currentUser.uid,

@@ -6,6 +6,11 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useAuth } from "../../context/AuthContextProvider";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
+import { useFolder } from "../../hooks/useFolder";
+import { useLocation } from "react-router-dom";
+import { database } from "../../firebase";
+import { ROOT_FOLDER } from "../../hooks/useFolder";
+
 
 
 const StyledFolder = styled.div`
@@ -31,7 +36,7 @@ const StyledLink = styled(Link)`
   align-items: center;
 `;
 
-const Folder = ({ folder, onDelete, onRename }) => {
+const Folder = ({ folder }) => {
   const { currentUser } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -41,19 +46,37 @@ const Folder = ({ folder, onDelete, onRename }) => {
   };
 
   const handleDeleteClick = () => {
-    // Handle delete logic here
-    onDelete(folder.id, "folder");
-    setIsDropdownOpen(false);
+    if (folder === ROOT_FOLDER) {
+      return;
+    }
+
+    database.folders
+      .doc(folder.id)
+      .delete()
+      .then(() => {
+        console.log("Folder deleted successfully");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleRenameClick = () => {
-    // Handle rename logic here
-    const newName = prompt("Enter new name:", folder.name);
-    if (newName) {
-      onRename(folder.id, "folder", newName);
-    }
-    setIsDropdownOpen(false);
-  };
+  if (folder === ROOT_FOLDER) {
+    return;
+  }
+
+  const newName = prompt("Enter new name for folder");
+  if (newName === null) {
+    return;
+  }
+
+  database.folders.doc(folder.id).update({
+    name: newName,
+  });
+};
+
+
 
   return (
     <StyledFolder>

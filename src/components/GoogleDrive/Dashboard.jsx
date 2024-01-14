@@ -28,7 +28,9 @@ const Dashboard = () => {
     folderId,
     state.folder
   );
-
+  console.log(folderId);
+    console.log(folder);
+    console.log(childFolders);
   return (
     <div>
       <Navbar />
@@ -49,7 +51,6 @@ const Dashboard = () => {
             <AddFolderButton currentFolder={folder} />
           </div>
         </Head>
-        {/* {folder && <Folder folder={folder} />} */}
         {childFolders.length > 0 && (
           <>
             <h2 style={{ margin: "5px 15px" }}>Folders</h2>
