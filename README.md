@@ -3,13 +3,17 @@
 **Drive React** is a practice project aimed at solidifying understanding of key concepts in Firebase. It implements features related to user authentication, form validation, and file/folder management.
 
 ### Demo
+
+#### Login credential
+##### email: test@gmail.com
+##### password: 123456
+
 ![Screenshot 2024-06-08 at 11 05 16 PM](https://github.com/hrshkshri/drive-react/assets/108923011/6bb1807b-6b7b-4f99-934d-a8e741c50075)
 ![Screenshot 2024-06-08 at 10 57 09 PM](https://github.com/hrshkshri/drive-react/assets/108923011/274d57dd-6555-40e1-ab94-bc927452c1ee)
 ![Screenshot 2024-06-08 at 10 56 56 PM](https://github.com/hrshkshri/drive-react/assets/108923011/23d0292a-1145-43b8-a881-80db5de0a9f5)
 ![Screenshot 2024-06-08 at 10 56 43 PM](https://github.com/hrshkshri/drive-react/assets/108923011/755d312c-dc81-4f97-a1a5-b3e29aff6532)
 ![Screenshot 2024-06-08 at 10 56 34 PM](https://github.com/hrshkshri/drive-react/assets/108923011/d3bc2a05-b616-434c-b7dc-c98f5303c122)
 ![Screenshot 2024-06-08 at 10 54 59 PM](https://github.com/hrshkshri/drive-react/assets/108923011/bf9fd03d-f3c3-421e-9aa7-fe5fcbbc9ab2)
-
 
 
 ## Features
